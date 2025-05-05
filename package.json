@@ -39,6 +39,7 @@
   "devDependencies": {
     "@azure/identity": "^4.9.1",
     "@azure/keyvault-secrets": "^4.9.0",
+    "@seneca/env": ">=0.2",
     "@seneca/maintain": "^0.1.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.2",
@@ -50,6 +51,7 @@
   },
   "peerDependencies": {
     "seneca": ">=3||>=4.0.0-rc2",
-    "seneca-promisify": ">=3"
+    "seneca-promisify": ">=3",
+    "@seneca/env": ">=0.2"
   }
 }
