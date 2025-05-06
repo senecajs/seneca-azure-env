@@ -2,8 +2,8 @@ import AzureEnv, { AzureKeyVaultOptions } from '../src/azure'
 
 const Seneca = require('seneca')
 
-const azureOptions: AzureKeyVaultOptions = {
-  keyVaultUrl: 'https://test-keyvault.vault.azure.net/',
+const azureVaultOptions: AzureKeyVaultOptions = {
+  url: 'https://test-keyvault.vault.azure.net/',
 }
 
 describe('azure-env', () => {
@@ -17,7 +17,7 @@ describe('azure-env', () => {
       .test()
       .use('promisify')
       .use(AzureEnv, {
-        azure: azureOptions,
+        keyVault: azureVaultOptions,
       })
       .use('env', {
         // debug: true,

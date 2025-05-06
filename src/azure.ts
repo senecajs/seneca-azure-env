@@ -1,62 +1,18 @@
 /* Copyright © 2021-2023 Richard Rodger, MIT License. */
 
-import Seneca from 'seneca'
 import { DefaultAzureCredential } from "@azure/identity"
 import { SecretClient } from "@azure/keyvault-secrets"
 
-const { Open, Skip } = Seneca.valid
-
-// Seneca action result.
-type GatewayResult = {
-  // The action result (transport externalized).
-  // OR: a description of the error.
-  out: any | {
-    // Externalized meta.
-    meta$: any
-    // Extracted from Error object
-    error$: {
-      name: string
-      id: string
-      code?: string
-      message?: string
-      details?: any
-    }
-  }
-  // Indicate if result was an error.
-  error: boolean
-  // Original meta object.
-  meta?: any
-  // Gateway directives embedded in action result.
-  // NOTE: $ suffix as output directive.
-  gateway$?: Record<string, any>
-}
-
 type AzureKeyVaultOptions = {
-  keyVaultUrl: string
+  url: string
 }
 
 // See defaults below for behavior.
-type GatewayOptions = {
-  allow: Record<string, boolean | (string | object)[]>
-  custom: any
-  fixed: any
-  timeout: {
-    client: boolean
-    max: number
-  }
-  error: {
-    message: boolean
-    details: boolean
-  }
-  debug: {
-    response: boolean
-    log: boolean
-  }
-  // Add azure support
-  azure: AzureKeyVaultOptions
+type AzureEnvOptions = {
+  keyVault: AzureKeyVaultOptions
 }
 
-function azure(this: any, options: GatewayOptions) {
+function azure(this: any, options: AzureEnvOptions) {
   let seneca: any = this
   // const root: any = seneca.root
 
@@ -64,7 +20,7 @@ function azure(this: any, options: GatewayOptions) {
 
   try {
     const credential = new DefaultAzureCredential()
-    azureClient = new SecretClient(options.azure.keyVaultUrl, credential)
+    azureClient = new SecretClient(options.keyVault.url, credential)
   } catch (err: any) {
     throw seneca.fail(err)
   }
@@ -114,55 +70,15 @@ function azure(this: any, options: GatewayOptions) {
 
 // Default options.
 azure.defaults = ({
-  // Keys are pattern strings.
-  allow: Skip(Open({})),
-
-  // Add custom meta data values.
-  custom: Open({
-    // Assume gateway is used to handle external messages.
-    safe: false
-  }),
-
-  // Set request delegate fixed values.
-  fixed: Open({}),
-
-  // Allow clients to set a custom timeout (using the timeout$ directive).
-  timeout: {
-    // Clients can set a custom timeout.
-    client: false,
-
-    // Maximum value of client-set timeout.
-    // Default is same as Seneca delegate.
-    max: -1
-  },
-
-  error: {
-    // Include exception object message property in response.
-    message: false,
-
-    // Include exception object details property in response.
-    details: false,
-  },
-
-  // Control debug output.
-  debug: {
-    // When true, errors will include stack trace and other meta data.
-    response: false,
-
-    // Produce detailed debug logging.
-    log: false,
-  },
-
   // Azure Key Vault configuration
-  azure: {
+  keyVault: {
     // Key Vault URL
-    keyVaultUrl: "",
+    url: "",
   }
-} as GatewayOptions)
+} as AzureEnvOptions)
 
 export type {
-  GatewayOptions,
-  GatewayResult,
+  AzureEnvOptions,
   AzureKeyVaultOptions
 }
 

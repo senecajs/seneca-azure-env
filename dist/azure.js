@@ -1,20 +1,15 @@
 "use strict";
 /* Copyright © 2021-2023 Richard Rodger, MIT License. */
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const seneca_1 = __importDefault(require("seneca"));
 const identity_1 = require("@azure/identity");
 const keyvault_secrets_1 = require("@azure/keyvault-secrets");
-const { Open, Skip } = seneca_1.default.valid;
 function azure(options) {
     let seneca = this;
     // const root: any = seneca.root
     let azureClient = null;
     try {
         const credential = new identity_1.DefaultAzureCredential();
-        azureClient = new keyvault_secrets_1.SecretClient(options.azure.keyVaultUrl, credential);
+        azureClient = new keyvault_secrets_1.SecretClient(options.keyVault.url, credential);
     }
     catch (err) {
         throw seneca.fail(err);
@@ -57,40 +52,10 @@ function azure(options) {
 }
 // Default options.
 azure.defaults = {
-    // Keys are pattern strings.
-    allow: Skip(Open({})),
-    // Add custom meta data values.
-    custom: Open({
-        // Assume gateway is used to handle external messages.
-        safe: false
-    }),
-    // Set request delegate fixed values.
-    fixed: Open({}),
-    // Allow clients to set a custom timeout (using the timeout$ directive).
-    timeout: {
-        // Clients can set a custom timeout.
-        client: false,
-        // Maximum value of client-set timeout.
-        // Default is same as Seneca delegate.
-        max: -1
-    },
-    error: {
-        // Include exception object message property in response.
-        message: false,
-        // Include exception object details property in response.
-        details: false,
-    },
-    // Control debug output.
-    debug: {
-        // When true, errors will include stack trace and other meta data.
-        response: false,
-        // Produce detailed debug logging.
-        log: false,
-    },
     // Azure Key Vault configuration
-    azure: {
+    keyVault: {
         // Key Vault URL
-        keyVaultUrl: "",
+        url: "",
     }
 };
 exports.default = azure;
