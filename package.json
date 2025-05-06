@@ -1,6 +1,6 @@
 {
   "name": "@seneca/azure-env",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "dist/azure.js",
   "type": "commonjs",
   "types": "dist/azure.d.ts",
