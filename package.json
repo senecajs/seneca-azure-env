@@ -1,6 +1,6 @@
 {
   "name": "@seneca/azure-env",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "main": "dist/azure.js",
   "type": "commonjs",
   "types": "dist/azure.d.ts",
@@ -13,7 +13,7 @@
   "author": "Richard Rodger - richardrodger.com",
   "repository": {
     "type": "git",
-    "url": "git://github.com/senecajs/seneca-gateway.git"
+    "url": "git://github.com/senecajs/seneca-azure-env.git"
   },
   "scripts": {
     "test": "jest --coverage",
