@@ -1,14 +1,14 @@
 {
-  "name": "@seneca/gateway",
-  "version": "1.3.0",
-  "main": "dist/gateway.js",
+  "name": "@seneca/azure-env",
+  "version": "0.0.1",
+  "main": "dist/azure.js",
   "type": "commonjs",
-  "types": "dist/gateway.d.ts",
+  "types": "dist/azure.d.ts",
   "description": "Handle incoming messages within other frameworks.",
-  "homepage": "https://github.com/senecajs/seneca-gateway",
+  "homepage": "https://github.com/senecajs/seneca-azure-env",
   "keywords": [
     "seneca",
-    "gateway"
+    "azure"
   ],
   "author": "Richard Rodger - richardrodger.com",
   "repository": {
@@ -37,6 +37,9 @@
     "node": ">=14"
   },
   "devDependencies": {
+    "@azure/identity": "^4.9.1",
+    "@azure/keyvault-secrets": "^4.9.0",
+    "@seneca/env": ">=0.5",
     "@seneca/maintain": "^0.1.0",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.2",
@@ -48,6 +51,7 @@
   },
   "peerDependencies": {
     "seneca": ">=3||>=4.0.0-rc2",
-    "seneca-promisify": ">=3"
+    "seneca-promisify": ">=3",
+    "@seneca/env": ">=0.5"
   }
 }
