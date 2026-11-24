@@ -42,14 +42,14 @@ function azure(this: any, options: AzureEnvOptions) {
 
       return secrets
     } catch (err: any) {
-      console.log("ERROR GETTING SECRETS")
-      console.log("TEMPORARLY RETURNING TEST VALUES")
-
-      // Temporarily return fake secrets for test
-      return {
-        azurekey1: 'value1',
-        azurekey2: 'value2'
-      }
+      // Fail: never hand back made up values. When the secrets are
+      // loaded for @seneca/env, the failure stops Seneca from starting.
+      const failure: Error & { cause?: unknown } = new Error(
+        '@seneca/azure-env: cannot read the secrets of the Key Vault ' +
+        options.keyVault.url + ': ' + err.message
+      )
+      failure.cause = err
+      throw failure
     }
   }
 
